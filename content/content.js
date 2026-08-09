@@ -1,0 +1,1 @@
+console.log("auto copy content is loaded") ;
