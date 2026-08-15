@@ -26,16 +26,24 @@ backBtn.addEventListener("click",     () => { showView("history"); loadHistory()
 // ── Settings ───────────────────────────────────────────────
 
 async function loadPopupSettings() {
-    const settings = await getSettings();
+    try {
+        const settings = await getSettings();
 
-    enabledInput.checked           = settings.enabled;
-    showToastInput.checked         = settings.showToast;
-    preventDuplicatesInput.checked = settings.preventDuplicates;
-    historyEnabledInput.checked    = settings.historyEnabled;
+        enabledInput.checked           = settings.enabled;
+        showToastInput.checked         = settings.showToast;
+        preventDuplicatesInput.checked = settings.preventDuplicates;
+        historyEnabledInput.checked    = settings.historyEnabled;
+    } catch (error) {
+        console.error("[Auto Copy] Failed to load settings:", error);
+    }
 }
 
 async function handleSettingChange(event) {
-    await updateSetting(event.target.id, event.target.checked);
+    try {
+        await updateSetting(event.target.id, event.target.checked);
+    } catch (error) {
+        console.error("[Auto Copy] Failed to save setting:", error);
+    }
 }
 
 enabledInput.addEventListener("change",           handleSettingChange);
@@ -111,11 +119,13 @@ async function loadHistory() {
 
         if (!settings.historyEnabled) {
             renderHistory([]);
-            historyEmpty.textContent = "History is turned off.";
+            historyEmpty.textContent  = "History is turned off.";
+            clearHistoryBtn.hidden    = true;
             return;
         }
 
-        historyEmpty.textContent = "No history yet.";
+        clearHistoryBtn.hidden    = false;
+        historyEmpty.textContent  = "No history yet.";
         const history = await getClipboardHistory();
         renderHistory(history);
     } catch (error) {

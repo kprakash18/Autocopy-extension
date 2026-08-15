@@ -16,7 +16,11 @@ async function handleSelection(selectedText) {
     lastCopiedText = selectedText;
 
     if (settings.historyEnabled) {
-        await addToClipboardHistory(selectedText);
+        try {
+            await addToClipboardHistory(selectedText);
+        } catch (error) {
+            console.error("[Auto Copy] Failed to save clipboard history:", error);
+        }
     }
 
     if (settings.showToast) {

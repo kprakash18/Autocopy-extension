@@ -25,7 +25,8 @@ async function resetSettings() {
 
 async function getClipboardHistory() {
     const result = await chrome.storage.local.get(HISTORY_KEY);
-    return result[HISTORY_KEY] || [];
+    const history = result[HISTORY_KEY];
+    return Array.isArray(history) ? history : [];
 }
 
 async function addToClipboardHistory(text) {
@@ -35,7 +36,7 @@ async function addToClipboardHistory(text) {
 
     const updated = [
         { id: crypto.randomUUID(), text, timestamp: Date.now() },
-        ...history
+        ...history.filter(item => item.text !== text)
     ].slice(0, MAX_HISTORY);
 
     await chrome.storage.local.set({ [HISTORY_KEY]: updated });
