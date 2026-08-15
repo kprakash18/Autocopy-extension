@@ -1,4 +1,4 @@
-importScripts('utils/constants.js', 'utils/storage.js', 'utils/siteAccess.js', 'utils/iconState.js');
+importScripts('utils/constants.js', 'utils/storage.js', 'utils/siteAccess.js');
 
 async function updateExtensionIcon(tabId, url) {
     const inactivePath = {
