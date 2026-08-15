@@ -1,8 +1,5 @@
 async function copyToClipboard(text) {
-    if (!text) {
-        return false;
-    }
-
+    if (!text) return false;
     try {
         await navigator.clipboard.writeText(text);
 
