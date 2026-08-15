@@ -22,7 +22,13 @@
 
     "action": {
         "default_popup": "popup/popup.html",
-        "default_title": "Auto Copy"
+        "default_title": "Auto Copy",
+        "default_icon": {
+            "16": "icons/icon-enabled-16.png",
+            "32": "icons/icon-enabled-32.png",
+            "48": "icons/icon-enabled-48.png",
+            "128": "icons/icon-enabled-128.png"
+        }
     },
 
     "commands": {
