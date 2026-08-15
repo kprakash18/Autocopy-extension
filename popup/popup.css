@@ -232,3 +232,117 @@ body {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
+
+/* ── Nav row (Website Access ›) ── */
+
+.nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.nav-arrow {
+    font-size: 18px;
+    color: var(--muted);
+}
+
+/* ── Site Access view ── */
+
+.current-site-block {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+}
+
+.current-hostname {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.radio-group {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+}
+
+.radio-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 0;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.radio-row input[type="radio"] {
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+}
+
+.site-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.site-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1;
+}
+
+.remove-btn:hover {
+    color: var(--danger);
+}
+
+.add-site-btn {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px;
+    background: none;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    color: var(--accent);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.add-site-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.add-site-btn:disabled {
+    border-color: var(--border);
+    color: var(--muted);
+    cursor: default;
+}
+
+.add-site-btn:disabled:hover {
+    background: none;
+}

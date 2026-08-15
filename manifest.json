@@ -4,7 +4,7 @@
     "description" : "Automatically copies selected text to the clipboard",
     "version" : "1.0.0" ,
 
-    "permissions" : [ "storage", "clipboardWrite" ] ,
+    "permissions" : [ "storage", "clipboardWrite", "tabs" ] ,
      "host_permissions" : [ "<all_urls>" ] ,
 
     "background": {

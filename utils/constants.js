@@ -5,7 +5,9 @@ const DEFAULT_SETTINGS = {
     enabled: true,
     showToast: true,
     historyEnabled: true,
-    preventDuplicates: true
+    preventDuplicates: true,
+    siteAccessMode: "all",
+    allowedSites: []
 };
 
 const HISTORY_KEY = "clipboardHistory";

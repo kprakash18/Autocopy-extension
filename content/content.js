@@ -8,6 +8,10 @@ async function loadSettings() {
 async function handleSelection(selectedText) {
     if (!selectedText) return;
     if (!settings.enabled) return;
+    if (settings.siteAccessMode === "selected") {
+        const hostname = window.location.hostname.replace(/^www\./, "");
+        if (!settings.allowedSites.includes(hostname)) return;
+    }
     if (settings.preventDuplicates && selectedText === lastCopiedText) return;
 
     const copied = await copyToClipboard(selectedText);

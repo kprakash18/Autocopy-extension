@@ -78,6 +78,49 @@
                     </label>
                 </div>
 
+                <button id="siteAccessBtn" class="nav-row" type="button">
+                    <span class="setting-name">Website Access</span>
+                    <span class="nav-arrow">›</span>
+                </button>
+
+            </section>
+
+        </div>
+
+        <!-- ── Site Access view ── -->
+        <div id="siteAccessView" hidden>
+
+            <header class="header">
+                <button id="siteAccessBackBtn" class="icon-btn" type="button" aria-label="Back" title="Back">←</button>
+                <span class="header-title">Website Access</span>
+            </header>
+
+            <section class="site-access-section">
+
+                <div class="current-site-block">
+                    <span class="section-label">Current website</span>
+                    <span id="currentHostnameEl" class="current-hostname"></span>
+                </div>
+
+                <div class="radio-group">
+                    <label class="radio-row">
+                        <input type="radio" name="siteMode" id="modeAll" value="all">
+                        <span>Allow on all websites</span>
+                    </label>
+                    <label class="radio-row">
+                        <input type="radio" name="siteMode" id="modeSelected" value="selected">
+                        <span>Allow only selected websites</span>
+                    </label>
+                </div>
+
+                <div id="allowedSitesSection" hidden>
+                    <div class="section-bar">
+                        <span class="section-label">Allowed websites</span>
+                    </div>
+                    <ul id="allowedSitesList" class="site-list"></ul>
+                    <button id="addSiteBtn" class="add-site-btn" type="button">+ Allow this website</button>
+                </div>
+
             </section>
 
         </div>

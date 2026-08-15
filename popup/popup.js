@@ -13,11 +13,24 @@ const showToastInput         = document.getElementById("showToast");
 const preventDuplicatesInput = document.getElementById("preventDuplicates");
 const historyEnabledInput    = document.getElementById("historyEnabled");
 
+// ── Site Access DOM refs ───────────────────────────────────
+
+const siteAccessView      = document.getElementById("siteAccessView");
+const siteAccessBtn       = document.getElementById("siteAccessBtn");
+const siteAccessBackBtn   = document.getElementById("siteAccessBackBtn");
+const currentHostnameEl   = document.getElementById("currentHostnameEl");
+const modeAllRadio        = document.getElementById("modeAll");
+const modeSelectedRadio   = document.getElementById("modeSelected");
+const allowedSitesSection = document.getElementById("allowedSitesSection");
+const allowedSitesList    = document.getElementById("allowedSitesList");
+const addSiteBtn          = document.getElementById("addSiteBtn");
+
 // ── View switching ─────────────────────────────────────────
 
 function showView(view) {
-    historyView.hidden  = view !== "history";
-    settingsView.hidden = view !== "settings";
+    historyView.hidden    = view !== "history";
+    settingsView.hidden   = view !== "settings";
+    siteAccessView.hidden = view !== "siteAccess";
 }
 
 settingsBtn.addEventListener("click", () => showView("settings"));
@@ -142,6 +155,106 @@ clearHistoryBtn.addEventListener("click", async () => {
         console.error("[Auto Copy] Failed to clear clipboard history:", error);
     }
 });
+
+// ── Site Access ────────────────────────────────────────────
+
+let currentHostname = "";
+
+async function getCurrentHostname() {
+    try {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!tab?.url) return "";
+        return new URL(tab.url).hostname.replace(/^www\./, "");
+    } catch {
+        return "";
+    }
+}
+
+
+function renderAllowedSites(sites) {
+    allowedSitesList.innerHTML = "";
+
+    sites.forEach(site => {
+        const li = document.createElement("li");
+        li.className = "site-item";
+
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = site;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className  = "remove-btn";
+        removeBtn.type       = "button";
+        removeBtn.textContent = "×";
+        removeBtn.setAttribute("aria-label", `Remove ${site}`);
+
+        removeBtn.addEventListener("click", async () => {
+            try {
+                const settings = await getSettings();
+                await updateSetting("allowedSites", settings.allowedSites.filter(s => s !== site));
+                await loadSiteAccess();
+            } catch (error) {
+                console.error("[Auto Copy] Failed to remove site:", error);
+            }
+        });
+
+        li.append(nameSpan, removeBtn);
+        allowedSitesList.appendChild(li);
+    });
+}
+
+async function loadSiteAccess() {
+    try {
+        const settings = await getSettings();
+
+        currentHostnameEl.textContent  = currentHostname || "—";
+        modeAllRadio.checked           = settings.siteAccessMode === "all";
+        modeSelectedRadio.checked      = settings.siteAccessMode === "selected";
+        allowedSitesSection.hidden     = settings.siteAccessMode !== "selected";
+
+        if (settings.siteAccessMode === "selected") {
+            renderAllowedSites(settings.allowedSites);
+            const alreadyAdded = !currentHostname || settings.allowedSites.includes(currentHostname);
+            addSiteBtn.disabled    = alreadyAdded;
+            addSiteBtn.textContent = alreadyAdded && currentHostname
+                ? "✓ Already allowed"
+                : "+ Allow this website";
+        }
+    } catch (error) {
+        console.error("[Auto Copy] Failed to load site access:", error);
+    }
+}
+
+async function handleModeChange(event) {
+    try {
+        await updateSetting("siteAccessMode", event.target.value);
+        await loadSiteAccess();
+    } catch (error) {
+        console.error("[Auto Copy] Failed to update site mode:", error);
+    }
+}
+
+modeAllRadio.addEventListener("change",      handleModeChange);
+modeSelectedRadio.addEventListener("change", handleModeChange);
+
+addSiteBtn.addEventListener("click", async () => {
+    if (!currentHostname) return;
+    try {
+        const settings = await getSettings();
+        if (settings.allowedSites.includes(currentHostname)) return;
+        await updateSetting("allowedSites", [...settings.allowedSites, currentHostname]);
+        await loadSiteAccess();
+    } catch (error) {
+        console.error("[Auto Copy] Failed to add site:", error);
+    }
+});
+
+siteAccessBtn.addEventListener("click", async () => {
+    currentHostname = await getCurrentHostname();
+    showView("siteAccess");
+    loadSiteAccess();
+});
+
+siteAccessBackBtn.addEventListener("click", () => showView("settings"));
 
 // ── Init ───────────────────────────────────────────────────
 
