@@ -11,6 +11,7 @@ const clearHistoryBtn  = document.getElementById("clearHistoryBtn");
 const enabledInput           = document.getElementById("enabled");
 const showToastInput         = document.getElementById("showToast");
 const preventDuplicatesInput = document.getElementById("preventDuplicates");
+const historyEnabledInput    = document.getElementById("historyEnabled");
 
 // ── View switching ─────────────────────────────────────────
 
@@ -20,7 +21,7 @@ function showView(view) {
 }
 
 settingsBtn.addEventListener("click", () => showView("settings"));
-backBtn.addEventListener("click",     () => showView("history"));
+backBtn.addEventListener("click",     () => { showView("history"); loadHistory(); });
 
 // ── Settings ───────────────────────────────────────────────
 
@@ -30,6 +31,7 @@ async function loadPopupSettings() {
     enabledInput.checked           = settings.enabled;
     showToastInput.checked         = settings.showToast;
     preventDuplicatesInput.checked = settings.preventDuplicates;
+    historyEnabledInput.checked    = settings.historyEnabled;
 }
 
 async function handleSettingChange(event) {
@@ -39,6 +41,7 @@ async function handleSettingChange(event) {
 enabledInput.addEventListener("change",           handleSettingChange);
 showToastInput.addEventListener("change",         handleSettingChange);
 preventDuplicatesInput.addEventListener("change", handleSettingChange);
+historyEnabledInput.addEventListener("change",    handleSettingChange);
 
 // ── History ────────────────────────────────────────────────
 
@@ -104,6 +107,15 @@ function renderHistory(items) {
 
 async function loadHistory() {
     try {
+        const settings = await getSettings();
+
+        if (!settings.historyEnabled) {
+            renderHistory([]);
+            historyEmpty.textContent = "History is turned off.";
+            return;
+        }
+
+        historyEmpty.textContent = "No history yet.";
         const history = await getClipboardHistory();
         renderHistory(history);
     } catch (error) {

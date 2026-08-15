@@ -14,7 +14,10 @@ async function handleSelection(selectedText) {
     if (!copied) return;
 
     lastCopiedText = selectedText;
-    await addToClipboardHistory(selectedText);
+
+    if (settings.historyEnabled) {
+        await addToClipboardHistory(selectedText);
+    }
 
     if (settings.showToast) {
         showToast("✓ Copied to clipboard");
