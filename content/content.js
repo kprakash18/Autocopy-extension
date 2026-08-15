@@ -15,7 +15,7 @@ async function handleSelection(selectedText) {
 
     lastCopiedText = selectedText;
 
-    if (settings.showPopup) {
+    if (settings.showToast) {
         showToast("✓ Copied to clipboard");
     }
 }
