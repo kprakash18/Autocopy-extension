@@ -40,7 +40,7 @@ enabledInput.addEventListener("change",           handleSettingChange);
 showToastInput.addEventListener("change",         handleSettingChange);
 preventDuplicatesInput.addEventListener("change", handleSettingChange);
 
-// ── History (M8 placeholder) ───────────────────────────────
+// ── History ────────────────────────────────────────────────
 
 function formatTime(timestamp) {
     const diff    = Date.now() - timestamp;
@@ -71,6 +71,27 @@ function createHistoryItem(item) {
     li.querySelector(".history-preview").textContent = item.text;
     li.querySelector(".history-time").textContent    = formatTime(item.timestamp);
 
+    const copyButton = li.querySelector(".copy");
+    copyButton.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(item.text);
+            copyButton.textContent = "✓";
+            setTimeout(() => { copyButton.textContent = "⧉"; }, 1000);
+        } catch (error) {
+            console.error("[Auto Copy] Failed to copy history item:", error);
+        }
+    });
+
+    const deleteButton = li.querySelector(".delete");
+    deleteButton.addEventListener("click", async () => {
+        try {
+            await deleteFromClipboardHistory(item.id);
+            await loadHistory();
+        } catch (error) {
+            console.error("[Auto Copy] Failed to delete history item:", error);
+        }
+    });
+
     return li;
 }
 
@@ -81,9 +102,26 @@ function renderHistory(items) {
     items.forEach(item => historyList.appendChild(createHistoryItem(item)));
 }
 
-clearHistoryBtn.addEventListener("click", () => renderHistory([]));
+async function loadHistory() {
+    try {
+        const history = await getClipboardHistory();
+        renderHistory(history);
+    } catch (error) {
+        console.error("[Auto Copy] Failed to load clipboard history:", error);
+        renderHistory([]);
+    }
+}
+
+clearHistoryBtn.addEventListener("click", async () => {
+    try {
+        await clearClipboardHistory();
+        await loadHistory();
+    } catch (error) {
+        console.error("[Auto Copy] Failed to clear clipboard history:", error);
+    }
+});
 
 // ── Init ───────────────────────────────────────────────────
 
-renderHistory([]);
 loadPopupSettings();
+loadHistory();

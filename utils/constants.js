@@ -7,3 +7,6 @@ const DEFAULT_SETTINGS = {
     historyEnabled: true,
     preventDuplicates: true
 };
+
+const HISTORY_KEY = "clipboardHistory";
+const MAX_HISTORY = 5;
