@@ -39,7 +39,6 @@ const handleSelectionChange = debounce(() => {
     const selectedText = selection.toString().trim();
     if (!selectedText) return;
 
-    console.log("[Auto Copy] Text selected:", selectedText);
     handleSelection(selectedText);
 }, SELECTION_DEBOUNCE_MS);
 
