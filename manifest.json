@@ -4,7 +4,7 @@
     "description" : "Automatically copies selected text to the clipboard",
     "version" : "1.0.0" ,
 
-    "permissions" : [ "storage" ] ,
+    "permissions" : [ "storage", "clipboardWrite" ] ,
      "host_permissions" : [ "<all_urls>" ] ,
 
     "background": {
@@ -14,7 +14,7 @@
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "js": ["content/content.js"],
+        "js": ["utils/clipboard.js", "content/content.js"],
         "run_at": "document_idle"
         }
     ],

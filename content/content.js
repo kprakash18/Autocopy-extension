@@ -1,11 +1,17 @@
-// selecting text 
-document.addEventListener('selectionchange', () => {
-  const selection = document.getSelection();
-  const selectedText = selection ? selection.toString() : '';
+document.addEventListener("selectionchange", async () => {
+    const selection = window.getSelection();
 
-  if (selectedText.trim()) {
-    console.log('User selected text:', selectedText);
-  } else {
-    console.log('Selection cleared');
-  }
+    if (!selection) {
+        return;
+    }
+
+    const selectedText = selection.toString().trim();
+
+    if (!selectedText) {
+        return;
+    }
+
+    console.log("[Auto Copy] Text selected:", selectedText);
+
+    await copyToClipboard(selectedText);
 });
