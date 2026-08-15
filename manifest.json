@@ -1,7 +1,7 @@
 {
     "manifest_version" : 3,
     "name" : "auto copy" ,
-    "description" : "Automatically copies selected text to the clipboard",
+    "description" : "Automatically copies selected text to the clipboard and tracks recent history.",
     "version" : "1.0.0" ,
 
     "permissions" : [ "storage", "clipboardWrite", "tabs" ] ,
