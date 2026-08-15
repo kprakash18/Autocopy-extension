@@ -14,7 +14,7 @@
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "js": ["utils/constants.js","utils/storage.js", "utils/clipboard.js", "utils/debounce.js", "utils/toast.js", "content/content.js"],
+        "js": ["utils/constants.js","utils/storage.js", "utils/clipboard.js", "utils/debounce.js", "utils/toast.js", "utils/siteAccess.js", "content/content.js"],
         "css": ["styles/toast.css"],
         "run_at": "document_idle"
         }

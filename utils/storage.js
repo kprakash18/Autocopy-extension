@@ -1,54 +1,78 @@
 async function getSettings() {
-    const stored = await chrome.storage.sync.get(DEFAULT_SETTINGS);
-
-    return {
-        ...DEFAULT_SETTINGS,
-        ...stored
-    };
+    if (!chrome?.storage?.sync) return DEFAULT_SETTINGS;
+    try {
+        const stored = await chrome.storage.sync.get(DEFAULT_SETTINGS);
+        return {
+            ...DEFAULT_SETTINGS,
+            ...stored
+        };
+    } catch {
+        return DEFAULT_SETTINGS;
+    }
 }
 
 async function saveSettings(settings) {
-    await chrome.storage.sync.set(settings);
+    if (!chrome?.storage?.sync) return;
+    try {
+        await chrome.storage.sync.set(settings);
+    } catch {}
 }
 
 async function updateSetting(key, value) {
-    await chrome.storage.sync.set({
-        [key]: value
-    });
+    if (!chrome?.storage?.sync) return;
+    try {
+        await chrome.storage.sync.set({ [key]: value });
+    } catch {}
 }
 
 async function resetSettings() {
-    await chrome.storage.sync.set(DEFAULT_SETTINGS);
+    if (!chrome?.storage?.sync) return;
+    try {
+        await chrome.storage.sync.set(DEFAULT_SETTINGS);
+    } catch {}
 }
 
 // ── Clipboard history (chrome.storage.local) ───────────────
 
 async function getClipboardHistory() {
-    const result = await chrome.storage.local.get(HISTORY_KEY);
-    const history = result[HISTORY_KEY];
-    return Array.isArray(history) ? history : [];
+    if (!chrome?.storage?.local) return [];
+    try {
+        const result = await chrome.storage.local.get(HISTORY_KEY);
+        const history = result?.[HISTORY_KEY];
+        return Array.isArray(history) ? history : [];
+    } catch {
+        return [];
+    }
 }
 
 async function addToClipboardHistory(text) {
-    if (!text) return;
+    if (!text || !chrome?.storage?.local) return;
 
-    const history = await getClipboardHistory();
+    try {
+        const history = await getClipboardHistory();
 
-    const updated = [
-        { id: crypto.randomUUID(), text, timestamp: Date.now() },
-        ...history.filter(item => item.text !== text)
-    ].slice(0, MAX_HISTORY);
+        const updated = [
+            { id: crypto.randomUUID(), text, timestamp: Date.now() },
+            ...history.filter(item => item.text !== text)
+        ].slice(0, MAX_HISTORY);
 
-    await chrome.storage.local.set({ [HISTORY_KEY]: updated });
+        await chrome.storage.local.set({ [HISTORY_KEY]: updated });
+    } catch {}
 }
 
 async function deleteFromClipboardHistory(id) {
-    const history = await getClipboardHistory();
-    await chrome.storage.local.set({
-        [HISTORY_KEY]: history.filter(item => item.id !== id)
-    });
+    if (!id || !chrome?.storage?.local) return;
+    try {
+        const history = await getClipboardHistory();
+        await chrome.storage.local.set({
+            [HISTORY_KEY]: history.filter(item => item.id !== id)
+        });
+    } catch {}
 }
 
 async function clearClipboardHistory() {
-    await chrome.storage.local.remove(HISTORY_KEY);
+    if (!chrome?.storage?.local) return;
+    try {
+        await chrome.storage.local.remove(HISTORY_KEY);
+    } catch {}
 }
