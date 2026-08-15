@@ -1,24 +1,89 @@
-const enabledInput = document.getElementById("enabled");
-const showToastInput = document.getElementById("showToast");
+// ── DOM refs ──────────────────────────────────────────────
+
+const historyView      = document.getElementById("historyView");
+const settingsView     = document.getElementById("settingsView");
+const settingsBtn      = document.getElementById("settingsBtn");
+const backBtn          = document.getElementById("backBtn");
+const historyList      = document.getElementById("historyList");
+const historyEmpty     = document.getElementById("historyEmpty");
+const clearHistoryBtn  = document.getElementById("clearHistoryBtn");
+
+const enabledInput           = document.getElementById("enabled");
+const showToastInput         = document.getElementById("showToast");
 const preventDuplicatesInput = document.getElementById("preventDuplicates");
+
+// ── View switching ─────────────────────────────────────────
+
+function showView(view) {
+    historyView.hidden  = view !== "history";
+    settingsView.hidden = view !== "settings";
+}
+
+settingsBtn.addEventListener("click", () => showView("settings"));
+backBtn.addEventListener("click",     () => showView("history"));
+
+// ── Settings ───────────────────────────────────────────────
 
 async function loadPopupSettings() {
     const settings = await getSettings();
 
-    enabledInput.checked = settings.enabled;
-    showToastInput.checked = settings.showToast;
+    enabledInput.checked           = settings.enabled;
+    showToastInput.checked         = settings.showToast;
     preventDuplicatesInput.checked = settings.preventDuplicates;
 }
 
 async function handleSettingChange(event) {
-    const settingName = event.target.id;
-    const value = event.target.checked;
-
-    await updateSetting(settingName, value);
+    await updateSetting(event.target.id, event.target.checked);
 }
 
-enabledInput.addEventListener("change", handleSettingChange);
-showToastInput.addEventListener("change", handleSettingChange);
+enabledInput.addEventListener("change",           handleSettingChange);
+showToastInput.addEventListener("change",         handleSettingChange);
 preventDuplicatesInput.addEventListener("change", handleSettingChange);
 
+// ── History (M8 placeholder) ───────────────────────────────
+
+function formatTime(timestamp) {
+    const diff    = Date.now() - timestamp;
+    const seconds = Math.floor(diff / 1000);
+
+    if (seconds < 60)               return "Just now";
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60)               return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24)                 return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+}
+
+function createHistoryItem(item) {
+    const li = document.createElement("li");
+    li.className = "history-item";
+    li.innerHTML = `
+        <div class="history-text">
+            <span class="history-preview"></span>
+            <span class="history-time"></span>
+        </div>
+        <div class="history-actions">
+            <button class="history-action copy" type="button" aria-label="Copy" title="Copy">⧉</button>
+            <button class="history-action delete" type="button" aria-label="Delete" title="Delete">🗑</button>
+        </div>
+    `;
+
+    li.querySelector(".history-preview").textContent = item.text;
+    li.querySelector(".history-time").textContent    = formatTime(item.timestamp);
+
+    return li;
+}
+
+function renderHistory(items) {
+    historyList.innerHTML = "";
+    historyEmpty.hidden   = items.length > 0;
+
+    items.forEach(item => historyList.appendChild(createHistoryItem(item)));
+}
+
+clearHistoryBtn.addEventListener("click", () => renderHistory([]));
+
+// ── Init ───────────────────────────────────────────────────
+
+renderHistory([]);
 loadPopupSettings();

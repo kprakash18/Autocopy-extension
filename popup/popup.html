@@ -3,73 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Auto Copy</title>
-
     <link rel="stylesheet" href="popup.css">
 </head>
-
 <body>
 
-    <main class="popup">
+    <div class="app">
 
-        <header class="popup-header">
-            <h1>Auto Copy</h1>
-            <p>Automatically copy selected text.</p>
-        </header>
+        <!-- ── History view (default) ── -->
+        <div id="historyView">
 
-        <section class="settings">
-
-            <label class="setting">
+            <header class="header">
                 <div>
-                    <span class="setting-title">Auto Copy</span>
-                    <span class="setting-description">
-                        Automatically copy selected text
-                    </span>
+                    <h1>Auto Copy</h1>
+                    <p>Automatically copy selected text</p>
+                </div>
+                <button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings" title="Settings">⚙</button>
+            </header>
+
+            <section class="history-section">
+
+                <div class="section-bar">
+                    <span class="section-label">Clipboard History</span>
+                    <button id="clearHistoryBtn" class="text-btn" type="button">Clear</button>
                 </div>
 
-                <input
-                    type="checkbox"
-                    id="enabled"
-                >
-            </label>
+                <ul id="historyList" class="history-list"></ul>
 
-            <label class="setting">
-                <div>
-                    <span class="setting-title">Show Notifications</span>
-                    <span class="setting-description">
-                        Show a notification after copying
-                    </span>
+                <p id="historyEmpty" class="history-empty">No history yet.</p>
+
+            </section>
+
+        </div>
+
+        <!-- ── Settings view ── -->
+        <div id="settingsView" hidden>
+
+            <header class="header">
+                <button id="backBtn" class="icon-btn" type="button" aria-label="Back" title="Back">←</button>
+                <span class="header-title">Settings</span>
+            </header>
+
+            <section class="settings-section">
+
+                <div class="setting-row">
+                    <span class="setting-name">Auto Copy</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="enabled">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
 
-                <input
-                    type="checkbox"
-                    id="showToast"
-                >
-            </label>
-
-            <label class="setting">
-                <div>
-                    <span class="setting-title">Prevent Duplicates</span>
-                    <span class="setting-description">
-                        Ignore consecutive duplicate selections
-                    </span>
+                <div class="setting-row">
+                    <span class="setting-name">Notifications</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="showToast">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
 
-                <input
-                    type="checkbox"
-                    id="preventDuplicates"
-                >
-            </label>
+                <div class="setting-row">
+                    <span class="setting-name">Prevent Duplicates</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="preventDuplicates">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
 
-        </section>
+            </section>
 
-        <footer class="popup-footer">
-            <span>Auto Copy</span>
-            <span>v1.0.0</span>
-        </footer>
+        </div>
 
-    </main>
+    </div>
 
     <script src="../utils/constants.js"></script>
     <script src="../utils/storage.js"></script>
