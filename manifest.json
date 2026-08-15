@@ -14,7 +14,7 @@
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "js": ["utils/clipboard.js", "content/content.js"],
+        "js": ["utils/constants.js", "utils/clipboard.js", "utils/debounce.js", "content/content.js"],
         "run_at": "document_idle"
         }
     ],

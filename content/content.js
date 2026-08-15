@@ -1,13 +1,22 @@
-document.addEventListener("selectionchange", async () => {
-    const selection = window.getSelection();
+let lastCopiedText = "";
 
-    if (!selection) return ;
+async function handleSelection(selectedText) {
+    if (!selectedText) return;
+    if (selectedText === lastCopiedText) return;
+
+    const copied = await copyToClipboard(selectedText);
+    if (copied) lastCopiedText = selectedText;
+}
+
+const handleSelectionChange = debounce(() => {
+    const selection = window.getSelection();
+    if (!selection) return;
 
     const selectedText = selection.toString().trim();
-
-    if (!selectedText)  return ;
+    if (!selectedText) return;
 
     console.log("[Auto Copy] Text selected:", selectedText);
+    handleSelection(selectedText);
+}, SELECTION_DEBOUNCE_MS);
 
-    await copyToClipboard(selectedText);
-});
+document.addEventListener("selectionchange", handleSelectionChange);
