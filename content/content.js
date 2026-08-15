@@ -1,12 +1,21 @@
+let settings = DEFAULT_SETTINGS;
 let lastCopiedText = "";
+
+async function loadSettings() {
+    settings = await getSettings();
+}
 
 async function handleSelection(selectedText) {
     if (!selectedText) return;
-    if (selectedText === lastCopiedText) return;
+    if (!settings.enabled) return;
+    if (settings.preventDuplicates && selectedText === lastCopiedText) return;
 
     const copied = await copyToClipboard(selectedText);
-    if (copied) {
-        lastCopiedText = selectedText;
+    if (!copied) return;
+
+    lastCopiedText = selectedText;
+
+    if (settings.showPopup) {
         showToast("✓ Copied to clipboard");
     }
 }
@@ -22,4 +31,15 @@ const handleSelectionChange = debounce(() => {
     handleSelection(selectedText);
 }, SELECTION_DEBOUNCE_MS);
 
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== "sync") return;
+
+    for (const key of Object.keys(changes)) {
+        if (key in settings) {
+            settings[key] = changes[key].newValue;
+        }
+    }
+});
+
 document.addEventListener("selectionchange", handleSelectionChange);
+loadSettings();
