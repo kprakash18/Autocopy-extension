@@ -1,15 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Auto Copy</title>
+
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
 
-    <h2>Auto Copy</h2>
-    <p>Extension loaded successfully.</p>
+    <main class="popup">
 
+        <header class="popup-header">
+            <h1>Auto Copy</h1>
+            <p>Automatically copy selected text.</p>
+        </header>
+
+        <section class="settings">
+
+            <label class="setting">
+                <div>
+                    <span class="setting-title">Auto Copy</span>
+                    <span class="setting-description">
+                        Automatically copy selected text
+                    </span>
+                </div>
+
+                <input
+                    type="checkbox"
+                    id="enabled"
+                >
+            </label>
+
+            <label class="setting">
+                <div>
+                    <span class="setting-title">Show Notifications</span>
+                    <span class="setting-description">
+                        Show a notification after copying
+                    </span>
+                </div>
+
+                <input
+                    type="checkbox"
+                    id="showToast"
+                >
+            </label>
+
+            <label class="setting">
+                <div>
+                    <span class="setting-title">Prevent Duplicates</span>
+                    <span class="setting-description">
+                        Ignore consecutive duplicate selections
+                    </span>
+                </div>
+
+                <input
+                    type="checkbox"
+                    id="preventDuplicates"
+                >
+            </label>
+
+        </section>
+
+        <footer class="popup-footer">
+            <span>Auto Copy</span>
+            <span>v1.0.0</span>
+        </footer>
+
+    </main>
+
+    <script src="../utils/constants.js"></script>
+    <script src="../utils/storage.js"></script>
     <script src="popup.js"></script>
 
 </body>
+</html>
