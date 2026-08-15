@@ -1,0 +1,34 @@
+.auto-copy-toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+
+    z-index: 2147483647;
+
+    padding: 10px 14px;
+
+    border-radius: 8px;
+
+    background: #16a34a;
+    color: #fff;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    opacity: 0;
+
+    transition:
+        opacity 150ms ease,
+        transform 150ms ease;
+
+    pointer-events: none;
+}
+
+.auto-copy-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}

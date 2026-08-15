@@ -5,7 +5,10 @@ async function handleSelection(selectedText) {
     if (selectedText === lastCopiedText) return;
 
     const copied = await copyToClipboard(selectedText);
-    if (copied) lastCopiedText = selectedText;
+    if (copied) {
+        lastCopiedText = selectedText;
+        showToast("✓ Copied to clipboard");
+    }
 }
 
 const handleSelectionChange = debounce(() => {
