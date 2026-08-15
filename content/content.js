@@ -51,6 +51,10 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
             settings[key] = changes[key].newValue;
         }
     }
+
+    if (changes.enabled) {
+        showToast(changes.enabled.newValue ? "Auto Copy enabled" : "Auto Copy disabled");
+    }
 });
 
 document.addEventListener("selectionchange", handleSelectionChange);

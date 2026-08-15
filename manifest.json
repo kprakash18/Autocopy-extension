@@ -23,6 +23,16 @@
     "action": {
         "default_popup": "popup/popup.html",
         "default_title": "Auto Copy"
+    },
+
+    "commands": {
+        "toggle-auto-copy": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Y",
+                "mac": "Command+Shift+Y"
+            },
+            "description": "Toggle Auto Copy"
+        }
     }
 
 }
