@@ -25,13 +25,6 @@ async function updateSetting(key, value) {
     } catch {}
 }
 
-async function resetSettings() {
-    if (!chrome?.storage?.sync) return;
-    try {
-        await chrome.storage.sync.set(DEFAULT_SETTINGS);
-    } catch {}
-}
-
 // ── Clipboard history (chrome.storage.local) ───────────────
 
 async function getClipboardHistory() {
