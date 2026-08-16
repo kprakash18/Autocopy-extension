@@ -66,6 +66,14 @@ historyEnabledInput.addEventListener("change",    handleSettingChange);
 
 // ── History ────────────────────────────────────────────────
 
+// ── History Icons ──────────────────────────────────────────
+
+const ICONS = {
+    copy: `<svg class="action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`,
+    copied: `<svg class="action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    delete: `<svg class="action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>`
+};
+
 function formatTime(timestamp) {
     const diff    = Date.now() - timestamp;
     const seconds = Math.floor(diff / 1000);
@@ -87,8 +95,8 @@ function createHistoryItem(item) {
             <span class="history-time"></span>
         </div>
         <div class="history-actions">
-            <button class="history-action copy" type="button" aria-label="Copy" title="Copy">⧉</button>
-            <button class="history-action delete" type="button" aria-label="Delete" title="Delete">🗑</button>
+            <button class="history-action copy" type="button" aria-label="Copy" title="Copy">${ICONS.copy}</button>
+            <button class="history-action delete" type="button" aria-label="Delete" title="Delete">${ICONS.delete}</button>
         </div>
     `;
 
@@ -99,8 +107,8 @@ function createHistoryItem(item) {
     copyButton.addEventListener("click", async () => {
         try {
             await navigator.clipboard.writeText(item.text);
-            copyButton.textContent = "✓";
-            setTimeout(() => { copyButton.textContent = "⧉"; }, 1000);
+            copyButton.innerHTML = ICONS.copied;
+            setTimeout(() => { copyButton.innerHTML = ICONS.copy; }, 1000);
         } catch (error) {
             console.error("[Auto Copy] Failed to copy history item:", error);
         }
