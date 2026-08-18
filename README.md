@@ -48,8 +48,7 @@ A lightweight, high-performance Google Chrome extension (Manifest V3) that autom
 
 ### Option 1: Chrome Web Store (Recommended)
 
-> *[Install from Chrome Web Store](#)* *(Link placeholder — coming soon upon store release)*
-
+> *[Install from Chrome Web Store](#)* 👉 [link](https://chromewebstore.google.com/detail/auto-copy/oegadoigjijlnegdogbbhcmjaamkdnjd)
 ---
 
 ### Option 2: Load Unpacked (Manual / Developer Mode)
